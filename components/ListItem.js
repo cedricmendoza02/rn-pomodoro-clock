@@ -5,9 +5,9 @@ const ListItem = ({num, select}) => {
   return (
     <TouchableOpacity 
       onPress={() => select(num)}>
-      <Text>{num}</Text>
+      <Text style={{fontSize: 30}}>{num}</Text>
     </TouchableOpacity>
   )
 }
 
-export default ListItem
+export default ListItem;

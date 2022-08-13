@@ -4,6 +4,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  ToastAndroid,
   StyleSheet,
 } from 'react-native';
 import ListItem from './ListItem';
@@ -12,25 +13,32 @@ const generateList = len => {
   return Array.from({length: len + 1}).map((_, i) => i);
 };
 
-const MinutesScroller = ({title, defaultMin}) => {
+const showToast = () => {
+  ToastAndroid.show("Pause timer to change parameters.", ToastAndroid.SHORT);
+};
+
+const MinutesScroller = ({title, minutes, updateMinutes, isRunning}) => {
   const [arr, setArr] = useState(generateList(60));
-  const [num, setNum] = useState(defaultMin);
   const [isPressed, setIsPressed] = useState(false);
 
   const select = i => {
-    setNum(i);
+    updateMinutes(title, i);
     setIsPressed(prevState => !prevState);
   };
 
   const handlePress = () => {
+    if(isRunning) {
+      showToast();
+      return;
+    }
     setIsPressed(prevState => !prevState);
   };
 
   return (
-    <View>
+    <View style={[styles.container, isRunning && styles.disabled]}>
       <Text style={{fontSize: 50, fontWeight: 'bold'}}>{title}</Text>
       {isPressed ? (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.scrollContainer}>
           {arr.map(i => (
             <ListItem key={i} num={i} select={select} />
           ))}
@@ -38,7 +46,7 @@ const MinutesScroller = ({title, defaultMin}) => {
       ) : (
         <TouchableOpacity>
           <Text style={styles.num} onPress={handlePress}>
-            {num}
+            {minutes}
           </Text>
         </TouchableOpacity>
       )}
@@ -47,14 +55,19 @@ const MinutesScroller = ({title, defaultMin}) => {
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+  },
   container: {
-    height: 300,
-    borderWidth: 1,
-    borderColor: 'black',
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'column'
   },
   num: {
     fontSize: 50,
   },
+  disabled: {
+    opacity: 0.3,
+  }
 });
 
 export default MinutesScroller;
