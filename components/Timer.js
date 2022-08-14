@@ -1,54 +1,29 @@
-import React, {useMemo, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import useInterval from './custom-hooks/useInterval';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#eeeee4',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 50,
-  },
-});
-
-const convertToMinutes = seconds => Math.floor(seconds / 60);
-
+// TODO: Fix bug. Same number for both timer to restart
 const Timer = ({title, minutes, isRunning, unmountTimer}) => {
-  const [runTime, setRunTime] = useState(minutes * 60); // in Seconds
-  const [seconds, setSeconds] = useState(0);
-  const [minutesDisplay, setMinutesDisplay] = useState(
-    convertToMinutes(runTime)
-  );
+  const [seconds, setSeconds] = useState(0);  
+  const [rt, setRt] = useState(minutes * 60);
+  const DELAY = 1000;
+
+  useInterval(() => {
+    setSeconds(prevSec => {
+      if(prevSec == 0) return 59;
+      return prevSec - 1;
+    });
+    setRt(prevRt => prevRt - 1);
+  }, isRunning ? DELAY : null );
 
   useEffect(() => {
-    setSeconds(0)
-    setRunTime(minutes * 60);
-    setMinutesDisplay(convertToMinutes(runTime));
-  }, [minutes])
-  
-  useEffect(() => {
-    if (runTime === 0) {
+    if(rt === 0) {
       unmountTimer();
-      return;
     }
-    setMinutesDisplay(convertToMinutes(runTime));
-  }, [runTime]);
+  }, [rt])
 
-  useInterval(
-    () => {
-      setRunTime(prevSec => prevSec - 1);
-      setSeconds(prevSec => {
-        if (prevSec == 0) return 59;
-        return prevSec - 1;
-      });
-    },
-    isRunning ? 10 : null
-  );
-
-  let mm = minutesDisplay < 10 ? `0${minutesDisplay}` : minutesDisplay;
+  let rtInMinutes = Math.floor(rt / 60);
+  let mm = rtInMinutes < 10 ? `0${rtInMinutes}` : rtInMinutes;
   let ss = seconds < 10 ? `0${seconds}` : seconds;
 
   return (
@@ -60,5 +35,19 @@ const Timer = ({title, minutes, isRunning, unmountTimer}) => {
     </View>
   );
 };
+
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#eeeee4',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+  },
+  text: {
+    fontSize: 50,
+  },
+});
 
 export default Timer;

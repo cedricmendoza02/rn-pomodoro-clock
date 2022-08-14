@@ -9,16 +9,14 @@ import {
 } from 'react-native';
 import ListItem from './ListItem';
 
-const generateList = len => {
-  return Array.from({length: len + 1}).map((_, i) => i);
-};
+const generateList = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
 
 const showToast = () => {
   ToastAndroid.show("Pause timer to change parameters.", ToastAndroid.SHORT);
 };
 
 const MinutesScroller = ({title, minutes, updateMinutes, isRunning}) => {
-  const [arr, setArr] = useState(generateList(60));
+  const [arr, setArr] = useState(generateList(1, 60, 1));
   const [isPressed, setIsPressed] = useState(false);
 
   const select = i => {
@@ -56,6 +54,7 @@ const MinutesScroller = ({title, minutes, updateMinutes, isRunning}) => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
+    width: '50%',
   },
   container: {
     flex: 1,
