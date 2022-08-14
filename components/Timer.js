@@ -1,8 +1,7 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import useInterval from './custom-hooks/useInterval';
 
-// TODO: Fix bug. Same number for both timer to restart
 const Timer = ({title, minutes, isRunning, unmountTimer}) => {
   const [seconds, setSeconds] = useState(0);  
   const [rt, setRt] = useState(minutes * 60);
