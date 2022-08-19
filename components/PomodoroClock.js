@@ -19,7 +19,10 @@ const PomodoroClock = ({reset}) => {
     renderCount.current = renderCount.current + 1;
   }, [workMin, breakMin]);
 
-  const toggleTimer = () => setCurrentTimer(prevState => prevState == 'Work' ? 'Break' : 'Work');
+  const toggleTimer = () => setCurrentTimer(prevState => {
+    renderCount.current = renderCount.current + 1;
+    return prevState == 'Work' ? 'Break' : 'Work'
+  });
   const toggleTimerStatus = () => setIsRunning(prevState => !prevState);
   const updateMinutes = (target, num) => target == 'Work' ? setWorkMin(num) : setBreakMin(num);
 
@@ -36,7 +39,7 @@ const PomodoroClock = ({reset}) => {
           unmountTimer={toggleTimer}
         /> : 
         <Timer
-          key={renderCount.current + 1}
+          key={renderCount.current}
           title="Break"
           minutes={breakMin}
           isRunning={isRunning}
