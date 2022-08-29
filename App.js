@@ -7,7 +7,11 @@ const App = () => {
   const resetGame = () => setRenderCount(prevState => prevState + 1);
 
   return (
-    <PomodoroClock key={renderCount} reset={resetGame}/>
+    <PomodoroClock 
+      key={renderCount} 
+      reset={resetGame}
+      defaultWorkMin={30}
+      defaultBreakMin={15} />
   );
 };  
 

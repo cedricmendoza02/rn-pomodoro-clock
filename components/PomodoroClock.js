@@ -4,9 +4,9 @@ import {View, Text, Button, StyleSheet} from 'react-native';
 import SoundPlayer from 'react-native-sound-player';
 
 // TODO: Allow app to continue running the interval even when the app is not focused.
-const PomodoroClock = ({reset}) => {
-  const [workMin, setWorkMin] = useState(30);
-  const [breakMin, setBreakMin] = useState(15);
+const PomodoroClock = ({reset, defaultWorkMin, defaultBreakMin}) => {
+  const [workMin, setWorkMin] = useState(defaultWorkMin);
+  const [breakMin, setBreakMin] = useState(defaultBreakMin);
   const [currentTimer, setCurrentTimer] = useState('Work');
   const [isRunning, setIsRunning] = useState(false);
   const renderCount = useRef(0);

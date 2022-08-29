@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "18.0.0",
     "react-native": "0.69.2",
+    "react-native-background-timer": "^2.4.1",
     "react-native-sound-player": "^0.13.2",
     "react-native-vector-icons": "^9.2.0"
   },
